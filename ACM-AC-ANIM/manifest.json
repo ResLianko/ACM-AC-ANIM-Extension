@@ -1,0 +1,39 @@
+{
+    "manifest_version": 3, 
+    "name": "ACM-AC-ANIM", 
+    "version": "1.0", 
+    "description": "Play a celebration animation when the algorithm problem is AC (Accepted).", 
+
+    "icons": {
+        "16": "icons/icon16.png",
+        "48": "icons/icon48.png"
+    },
+
+    "permissions": [
+        "storage",
+        "activeTab",
+        "scripting"
+    ],
+
+    "host_permissions": [
+        "*://codeforces.com/*",
+        "*://*.codeforces.com/*"
+    ],
+
+    "background": {
+        "service_worker": "background.js"
+    },
+
+    "content_scripts": [
+        {
+        "matches": ["*://codeforces.com/*", "*://*.codeforces.com/*"],
+        "js": ["content.js"],
+        "run_at": "document_idle"
+        }
+    ],
+
+    "web_accessible_resources": [{
+        "resources": ["assets/*"],
+        "matches": ["<all_urls>"]
+    }]
+}
