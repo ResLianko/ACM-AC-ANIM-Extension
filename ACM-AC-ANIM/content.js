@@ -1,40 +1,35 @@
+// content.js
+
 const REFRESH_DELAY = 5000;
 
 let isPlaying = false;
 let refreshTimer = null;
 
 let videoElement = null;
-let videoUrl = null;
+//let videoUrl = null;
+const VIDEO_URL = chrome.runtime.getURL('assets/accepted.mp4');
 
-async function getVideoUrl() {
-    return new Promise((resolve) => {
-        chrome.runtime.sendMessage({ action: "getVideoUrl" }, (response) => {
-            if (chrome.runtime.lastError) {
-                console.error("获取视频 URL 失败:", chrome.runtime.lastError);
-                resolve(null);
-            } else {
-                resolve(response.videoUrl);
-            }
-        });
-    });
-}
+// async function getVideoUrl() {
+//     return new Promise((resolve) => {
+//         chrome.runtime.sendMessage({ action: "getVideoUrl" }, (response) => {
+//             if (chrome.runtime.lastError) {
+//                 console.error("获取视频 URL 失败:", chrome.runtime.lastError);
+//                 resolve(null);
+//             } else {
+//                 resolve(response.videoUrl);
+//             }
+//         });
+//     });
+// }
 
 async function playCelebrationVideo() {
     if (isPlaying) return;
     
     try {
-        if (!videoUrl) {
-            videoUrl = await getVideoUrl();
-            if (!videoUrl) {
-                console.error("未找到视频文件，请确保 assets/accepted.mp4 存在");
-                return;
-            }
-        }
-        
         isPlaying = true;
 
         videoElement = document.createElement('video');
-        videoElement.src = videoUrl;
+        videoElement.src = VIDEO_URL;
         videoElement.controls = false;
         videoElement.autoplay = true;
         videoElement.muted = false;
@@ -213,6 +208,9 @@ function checkCFSubmission() {
 // 初始化函数
 function initACAnimation() {
     console.log("AC ANIM 插件已加载");
+    console.log("视频URL: ", VIDEO_URL);
+
+
     
     const isSubmissionPage = window.location.href.includes('/submissions') || 
                            window.location.href.includes('/problem/') ||
